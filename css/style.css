@@ -1,0 +1,205 @@
+/* ===== إعدادات عامة ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Cairo, sans-serif;
+  background: #f5f7fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* ===== الأقسام ===== */
+section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* ===== Hero ===== */
+.hero h1 {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+/* ===== Features ===== */
+.features ul {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0;
+}
+
+.features li {
+  font-size: 17px;
+  margin: 12px 0;
+}
+
+/* ===== Pricing ===== */
+.pricing h2 {
+  font-size: 32px;
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+/* ===== صندوق الصفحات الثانوية ===== */
+.box {
+  max-width: 600px;
+  background: #fff;
+  margin: 60px auto;
+  padding: 35px 25px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.12);
+  text-align: center;
+}
+
+/* ===== زر الشراء الأساسي ===== */
+.btn-primary {
+  display: inline-block;
+  margin: 18px 0;
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+  color: #fff;
+  padding: 18px 34px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.3);
+}
+
+/* ===== زر ثانوي ===== */
+.btn-secondary {
+  display: inline-block;
+  margin: 15px 0;
+  background: #1565c0;
+  color: #fff;
+  padding: 14px 26px;
+  border-radius: 10px;
+  font-size: 16px;
+  text-decoration: none;
+  opacity: .95;
+}
+
+.btn-secondary:hover {
+  opacity: 1;
+}
+
+/* ===== نصوص صغيرة ===== */
+.microcopy {
+  font-size: 14px;
+  color: #555;
+  margin-top: 12px;
+}
+
+/* ===== تحسين الجوال ===== */
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    font-size: 18px;
+  }
+
+  .btn-secondary {
+    width: 100%;
+  }
+}
+
+/* ===== Dark Mode تلقائي ===== */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+    color: #e5e7eb;
+  }
+
+  .box {
+    background: #020617;
+    box-shadow: none;
+  }
+
+  .microcopy {
+    color: #9ca3af;
+  }
+}
+/* ===== معاينة المنتج ===== */
+.product-preview {
+  margin: 40px auto;
+}
+
+.product-image {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.product-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 18px 40px rgba(0,0,0,.25);
+}
+
+.preview-note {
+  margin-top: 14px;
+  font-size: 15px;
+  color: #555;
+}
+
+.arrow-down {
+  font-size: 26px;
+  margin-top: 8px;
+  animation: bounce 1.6s infinite;
+}
+
+/* ===== حركة السهم ===== */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .preview-note {
+    color: #9ca3af;
+  }
+}
+
+/* =========================
+   زر شراء ثابت للجوال
+========================= */
+@media (max-width: 600px) {
+
+  .btn-primary {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 360px;
+    z-index: 999;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  }
+
+  /* مسافة حتى لا يغطي الزر المحتوى */
+  body {
+    padding-bottom: 90px;
+  }
+}
