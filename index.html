@@ -1,194 +1,143 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تحكم بميزانيتك الآن 💰</title>
-<link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>لوحة الميزانية الذكية</title>
+
 <style>
 body {
   font-family: Arial, sans-serif;
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #f4f7fa, #e9eff5);
   margin: 0;
-  padding: 0;
-  color: #333;
+  color: #222;
 }
 
-/* قسم عام */
-section {
-  max-width: 800px;
-  margin: 40px auto;
-  background: #ffffff;
-  padding: 40px 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-/* العنوان الرئيسي */
-.hero h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  line-height: 1.4;
-}
-
-/* الفقرات */
-.hero p,
-.product-preview .microcopy,
-.features ul li,
-.pricing p,
-.pricing .microcopy,
-.upsell-hint {
-  font-size: 1.15rem;  /* تكبير النصوص قليلاً */
-  line-height: 1.7;    /* تباعد جيد للقراءة */
-  margin: 10px 0;
-}
-
-/* معاينة المنتج */
-.product-preview {
-  margin: 30px 0;
+.container {
+  max-width: 820px;
+  margin: 30px auto;
+  background: #fff;
+  border-radius: 18px;
+  padding: 40px 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
   text-align: center;
 }
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+}
+
+h2 {
+  margin-top: 40px;
+}
+
+p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 12px 0;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: #eaf7ef;
+  color: #1e7e34;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
 .product-preview img {
   max-width: 100%;
-  border-radius: 12px;
+  border-radius: 14px;
+  margin-top: 20px;
 }
 
-/* الأزرار */
-.btn-primary {
+.btn {
   display: inline-block;
-  padding: 15px 35px;
-  font-size: 18px;
+  margin-top: 25px;
+  padding: 16px 40px;
+  font-size: 1.1rem;
   font-weight: bold;
-  color: #ffffff;
-  background: linear-gradient(90deg, #28a745, #218838);
-  border-radius: 12px;
+  border-radius: 14px;
   text-decoration: none;
-  margin: 20px 0;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(90deg, #28a745, #218838);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(40,167,69,0.35);
+  transition: 0.3s ease;
 }
-.btn-primary:hover {
+
+.btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(40, 167, 69, 0.5);
+  box-shadow: 0 12px 25px rgba(40,167,69,0.45);
 }
 
-/* العناوين الفرعية */
-h2 {
-  font-size: 1.6rem;
-  margin: 25px 0 15px;
-}
-
-/* قائمة المميزات */
 ul {
   list-style: none;
   padding: 0;
+  margin-top: 20px;
+  text-align: right;
 }
+
 ul li {
-  font-size: 1.15rem;
-  margin: 12px 0;
-  padding-left: 30px;
-  position: relative;
-}
-ul li::before {
-  content: "✔";
-  position: absolute;
-  left: 0;
-  color: #28a745;
+  background: #f8f9fa;
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  font-size: 1.05rem;
 }
 
-/* النصوص الصغيرة */
-.microcopy {
-  font-size: 0.95rem;
-  color: #555;
-  margin-top: 10px;
+.footer-note {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 20px;
 }
 
-/* الخط الفاصل */
-hr {
-  margin: 40px 0;
-  border: 0;
-  border-top: 1px solid #ddd;
-}
-
-/* تلميحات Upsell */
-.upsell-hint {
-  font-size: 1rem;
-  color: #FF4E50;
-  margin-top: 15px;
-}
-
-/* استجابة الموبايل */
-@media (max-width: 600px) {
-  .hero h1 {
-    font-size: 2.2rem;
-  }
-  .hero p,
-  .product-preview .microcopy,
-  .features ul li,
-  .pricing p,
-  .pricing .microcopy,
-  .upsell-hint {
-    font-size: 1.25rem;
-  }
-  .btn-primary {
-    font-size: 19px;
-    padding: 18px 30px;
-  }
+.highlight {
+  color: #e63946;
+  font-weight: bold;
 }
 </style>
 </head>
+
 <body>
 
-<section class="hero">
+<div class="container">
+
+  <div class="hero-badge">💡 أداة رقمية عملية لإدارة المصروفات</div>
+
   <h1>راتبك يختفي قبل نهاية الشهر؟ 🤯</h1>
-  <p>لوحة ميزانية ذكية تساعدك تعرف أين يذهب كل ريال وتستعيد السيطرة على مصاريفك بسهولة</p>
-  <p>📱 استخدمها فورًا — بدون تسجيل ⚡ نتائج من أول استخدام</p>
+
+  <p>لوحة الميزانية الذكية تساعدك تكتشف أين يذهب كل ريال وتستعيد السيطرة على مصاريفك بسهولة.</p>
+
+  <p>📱 بدون تسجيل — ⚡ نتائج من أول استخدام</p>
+
+  <a href="https://ndveID.short.gy/smart-budget" class="btn">
+    ابدأ التحكم بميزانيتك الآن
+  </a>
+
+  <p class="footer-note">🔒 دفع آمن عبر Gumroad · 🛡️ ضمان استرجاع 7 أيام</p>
 
   <div class="product-preview">
-    <img src="images/cover.png" alt="لوحة الميزانية الذكية">
-    <p class="microcopy">👀 معاينة حقيقية — استخدمها مباشرة بعد الشراء</p>
+    <img src="images/cover.png" alt="معاينة المنتج">
   </div>
 
-  <!-- زر الشراء الأساسي -->
-  <a href="https://ndveID.short.gy/smart-budget" class="btn-primary">
-    🟢 اشترِ المنتج الأساسي الآن (29 ريال)
-  </a>
+  <p class="highlight">🎁 بعد الشراء ستحصل على هدية إضافية مجانية</p>
 
-  <p class="microcopy">
-    🔒 دفع آمن عبر Gumroad · 🛡️ ضمان استرجاع 7 أيام
-  </p>
-
-  <p class="upsell-hint">
-    بعد الشراء، لديك فرصة الحصول على الدليل الإضافي مجانًا!
-  </p>
-</section>
-
-<section class="features">
   <h2>ماذا ستحصل عليه؟</h2>
+
   <ul>
-    <li>😤 توقف عن التساؤل: "وين راح الراتب؟"</li>
-    <li>📉 اكتشف المصاريف التي تستنزفك بصمت</li>
-    <li>🧠 خطط التزاماتك بدون نسيان</li>
-    <li>📊 شاهد وضعك المالي بوضوح من الجوال</li>
+    <li>✔ تعرف بالضبط أين يذهب راتبك</li>
+    <li>✔ تكتشف المصاريف التي تستنزفك بصمت</li>
+    <li>✔ تنظم التزاماتك الشهرية بسهولة</li>
+    <li>✔ تتابع وضعك المالي من الجوال</li>
   </ul>
 
-  <a href="https://ndveID.short.gy/smart-budget" class="btn-primary">
-    💰 ابدأ التحكم بميزانيتك الآن
-  </a>
-</section>
+  <h2>السعر</h2>
+  <p><strong>29 ريال فقط</strong> — تدفع مرة واحدة وتستخدم دائمًا</p>
 
-<section class="pricing">
-  <h2>29 ريال فقط — مرة واحدة</h2>
-  <p>استثمر 29 ريال وسيطر على ميزانيتك فورًا</p>
-
-  <a href="https://ndveID.short.gy/smart-budget" class="btn-primary">
-    🟢 اشترِ الآن وابدأ فورًا
-  </a>
-
-  <p class="microcopy">
-    ✔ استخدام دائم · ✔ مناسب للجوال والكمبيوتر
-  </p>
-</section>
+</div>
 
 </body>
 </html>
