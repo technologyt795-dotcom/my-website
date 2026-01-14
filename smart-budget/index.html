@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة الميزانية المتقدمة - الوضع الفاتح</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ===== عام ===== */
+body { font-family: 'Cairo','Tajawal',sans-serif; margin:0; background-color:#f5f5f5; color:#000; }
+.container { display:flex; flex-wrap:wrap; min-height:100vh; }
+.sidebar { width:220px; background-color:#e0e0e0; padding:20px; box-shadow:2px 0 5px rgba(0,0,0,0.1); flex-shrink:0; }
+.sidebar .logo { font-size:1.5em; margin-bottom:30px; text-align:center; }
+.sidebar ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+.sidebar ul li { padding:12px; cursor:pointer; border-radius:8px; display:flex; align-items:center; gap:10px; transition:background 0.3s; }
+.sidebar ul li.active, .sidebar ul li:hover { background-color:#90caf9; }
+.main-content { flex:1; padding:20px; min-width:0; overflow-x:hidden; }
+.section { display:none; animation:fadeIn 0.3s ease-in-out; }
+.section.active { display:block; }
+.cards { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+.card { flex:1 1 180px; min-width:150px; background:rgba(255,255,255,0.9); padding:20px; border-radius:15px; box-shadow:0 2px 8px rgba(0,0,0,0.1); text-align:center; }
+.card h3 { margin:0 0 10px; font-size:1.1em; }
+.card p { font-size:1.2em; font-weight:bold; margin:0; }
+.income-card { border-top:4px solid #2e7d32; }
+.expenses-card { border-top:4px solid #c62828; }
+.balance-card { border-top:4px solid #0288d1; }
+.savings-card { border-top:4px solid #fbc02d; }
+.available-card { border-top:4px solid #ff9800; }
+.chart { background:rgba(255,255,255,0.9); padding:20px; border-radius:15px; box-shadow:0 2px 8px rgba(0,0,0,0.1); margin-top:20px; overflow-x:auto; }
+.form-group { display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+.form-group input, select, button { padding:8px; border-radius:5px; border:1px solid #ccc; flex:1; min-width:100px; }
+button { background-color:#1976d2; color:#fff; border:none; cursor:pointer; transition:0.3s; }
+button:hover { background-color:#0d47a1; }
+table { width:100%; border-collapse:collapse; margin-top:10px; background:#fff; color:#000; }
+th, td { padding:8px; border:1px solid #ccc; text-align:center; font-size:0.9em; }
+th { background-color:#f2f2f2; }
+@media (max-width: 992px) {
+.container { flex-direction:column; }
+.sidebar { width:100%; display:flex; overflow-x:auto; padding:10px 0; box-shadow:none; }
+.sidebar ul { flex-direction:row; gap:5px; padding-left:10px; }
+.sidebar ul li { flex:1 0 auto; justify-content:center; text-align:center; margin-bottom:0; }
+.cards { flex-direction:column; }
+.form-group { flex-direction:column; }
+.form-group input, select, button { width:100%; }
+.chart canvas { width:100% !important; height:auto !important; }
+table { font-size:0.8em; }
+}
+@media (max-width: 576px) {
+.cards { gap:10px; }
+.card { padding:15px; font-size:0.9em; }
+.chart { padding:15px; }
+.form-group input, select, button { font-size:0.9em; }
+table th, table td { padding:6px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<aside class="sidebar">
+<h2 class="logo">💰 الميزانية</h2>
+<nav>
+<ul>
+<li class="active" data-section="dashboard"><i class="fas fa-chart-line"></i> لوحة التحكم</li>
+<li data-section="income"><i class="fas fa-wallet"></i> الدخل</li>
+<li data-section="expenses"><i class="fas fa-money-bill-wave"></i> المصروفات</li>
+<li data-section="liabilities"><i class="fas fa-file-invoice"></i> الالتزامات</li>
+<li data-section="months"><i class="fas fa-calendar-alt"></i> الأشهر</li>
+<li data-section="reports"><i class="fas fa-chart-pie"></i> التقارير</li>
+<li data-section="settings"><i class="fas fa-cog"></i> الإعدادات</li>
+</ul>
+</nav>
+</aside>
+
+<main class="main-content">
+
+<section id="dashboard" class="section active">
+<h1>لوحة التحكم</h1>
+<div class="cards">
+<div class="card income-card"><h3>إجمالي الدخل</h3><p>0 ريال</p></div>
+<div class="card expenses-card"><h3>إجمالي المصروفات</h3><p>0 ريال</p></div>
+<div class="card balance-card"><h3>صافي الرصيد</h3><p>0 ريال</p></div>
+<div class="card savings-card"><h3>الادخار</h3><p>0 ريال</p></div>
+<div class="card available-card"><h3>الرصيد المتاح بعد الادخار</h3><p>0 ريال</p></div>
+</div>
+<div class="chart">
+<h3>الرسم البياني للإيرادات</h3>
+<canvas id="dashboardChart"></canvas>
+</div>
+</section>
+
+<section id="income" class="section">
+<h1>الدخل</h1>
+<div class="form-group">
+<select id="incomeSelect"></select>
+<input type="number" id="incomeAmount" placeholder="المبلغ">
+<button id="addIncome">إضافة دخل</button>
+<button id="addIncomeItem">إضافة بند جديد</button>
+<button id="clearIncomeAmount">حذف المبالغ فقط</button>
+</div>
+<div class="form-group">
+<select id="editIncomeSelect"></select>
+<button id="editIncomeItem">تعديل بند</button>
+<button id="deleteIncomeItem">حذف بند</button>
+</div>
+<ul id="incomeList"></ul>
+</section>
+
+<section id="expenses" class="section">
+<h1>المصروفات</h1>
+<div class="form-group">
+<select id="expenseSelect"></select>
+<input type="number" id="expenseAmount" placeholder="المبلغ">
+<button id="addExpense">إضافة مصروف</button>
+<button id="addExpenseItem">إضافة بند جديد</button>
+<button id="clearExpenseAmount">حذف المبالغ فقط</button>
+</div>
+<div class="form-group">
+<select id="editExpenseSelect"></select>
+<button id="editExpenseItem">تعديل بند</button>
+<button id="deleteExpenseItem">حذف بند</button>
+</div>
+<ul id="expenseList"></ul>
+</section>
+
+<section id="liabilities" class="section">
+<h1>الالتزامات</h1>
+<div class="form-group">
+<input type="text" id="liabilityTitle" placeholder="البند">
+<input type="number" id="liabilityAmount" placeholder="المبلغ">
+<input type="date" id="liabilityDate">
+<select id="liabilityStatus">
+<option value="غير مدفوع">غير مدفوع</option>
+<option value="مدفوع">مدفوع</option>
+</select>
+<button id="addLiability">إضافة الالتزام</button>
+</div>
+<div class="chart">
+<table id="liabilitiesTable">
+<thead><tr><th>البند</th><th>المبلغ</th><th>التاريخ</th><th>الحالة</th><th>حذف</th><th>تغيير الحالة</th></tr></thead>
+<tbody></tbody>
+</table>
+</div>
+</section>
+
+<section id="months" class="section">
+<h1>الأشهر</h1>
+<select id="monthSelect">
+<option value="0">يناير</option><option value="1">فبراير</option><option value="2">مارس</option>
+<option value="3">أبريل</option><option value="4">مايو</option><option value="5">يونيو</option>
+<option value="6">يوليو</option><option value="7">أغسطس</option>
+<option value="8">سبتمبر</option><option value="9">أكتوبر</option>
+<option value="10">نوفمبر</option><option value="11">ديسمبر</option>
+</select>
+<p>تغيير البيانات حسب الشهر المحدد</p>
+</section>
+
+<!-- التقارير -->
+<section id="reports" class="section">
+<h1>التقارير</h1>
+<div id="reportSummary" class="chart">
+<p>إجمالي الدخل: <span id="reportIncome">0</span></p>
+<p>إجمالي المصروف: <span id="reportExpenses">0</span></p>
+<p>صافي الرصيد: <span id="reportBalance">0</span></p>
+<p>الادخار: <span id="reportSaving">0</span></p>
+<p>الرصيد المتاح بعد الادخار: <span id="reportAvailable">0</span></p>
+</div>
+<div class="chart">
+<canvas id="reportChart"></canvas>
+</div>
+<button id="printButton">طباعة التقرير</button>
+</section>	
+
+<section id="settings" class="section">
+<h1>الإعدادات</h1>
+<div class="form-group">
+<button id="resetData">إعادة تعيين البيانات</button>
+<select id="currencySelect">
+<option value="ريال">ريال</option>
+<option value="دولار">دولار</option>
+<option value="يورو">يورو</option>
+</select>
+<input type="number" id="savingPercent" placeholder="نسبة الادخار" value="20">
+</div>
+</section>
+
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// ===== JS كامل مع الوظائف =====
+
+// التنقل بين الأقسام
+const sections=document.querySelectorAll('.section');
+const sidebarItems=document.querySelectorAll('.sidebar ul li');
+sidebarItems.forEach(item=>item.addEventListener('click',()=>{
+  sidebarItems.forEach(i=>i.classList.remove('active'));
+  sections.forEach(s=>s.classList.remove('active'));
+  item.classList.add('active');
+  document.getElementById(item.dataset.section).classList.add('active');
+}));
+
+// تخزين البيانات
+let monthlyIncome=JSON.parse(localStorage.getItem('monthlyIncome'))||Array(12).fill().map(()=>[]);
+let monthlyExpenses=JSON.parse(localStorage.getItem('monthlyExpenses'))||Array(12).fill().map(()=>[]);
+let monthlyLiabilities=JSON.parse(localStorage.getItem('monthlyLiabilities'))||Array(12).fill().map(()=>[]);
+let currentMonth=parseInt(localStorage.getItem('currentMonth'))||0;
+let currentCurrency = localStorage.getItem('currentCurrency') || 'ريال';
+
+const incomeList=document.getElementById('incomeList');
+const expenseList=document.getElementById('expenseList');
+const liabilitiesTable=document.querySelector('#liabilitiesTable tbody');
+const incomeTotal=document.querySelector('.income-card p');
+const expensesTotal=document.querySelector('.expenses-card p');
+const balanceTotal=document.querySelector('.balance-card p');
+const savingsTotal=document.querySelector('.savings-card p');
+const availableTotal=document.querySelector('.available-card p');
+
+const incomeSelect=document.getElementById('incomeSelect');
+const expenseSelect=document.getElementById('expenseSelect');
+const monthSelect=document.getElementById('monthSelect');
+
+const defaultIncome=['راتب','مشروع','استثمار'];
+const defaultExpense=['سكن','طعام','تنقل'];
+
+// تهيئة select
+function initSelectOptions(){
+  if(incomeSelect.options.length===0) defaultIncome.forEach(item=>{
+    const option=document.createElement('option'); option.value=item; option.textContent=item; incomeSelect.appendChild(option);
+  });
+  if(expenseSelect.options.length===0) defaultExpense.forEach(item=>{
+    const option=document.createElement('option'); option.value=item; option.textContent=item; expenseSelect.appendChild(option);
+  });
+}
+initSelectOptions();
+
+// تحديث القوائم
+function updateIncomeEditSelect(){
+  const select=document.getElementById('editIncomeSelect'); select.innerHTML='';
+  monthlyIncome[currentMonth].forEach(i=>{ const option=document.createElement('option'); option.value=i.title; option.textContent=i.title; select.appendChild(option); });
+}
+function updateExpenseEditSelect(){
+  const select=document.getElementById('editExpenseSelect'); select.innerHTML='';
+  monthlyExpenses[currentMonth].forEach(i=>{ const option=document.createElement('option'); option.value=i.title; option.textContent=i.title; select.appendChild(option); });
+}
+
+// الرسوم البيانية
+const ctx=document.getElementById('dashboardChart').getContext('2d');
+const dashboardChart=new Chart(ctx,{type:'bar',data:{labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],datasets:[{label:'الدخل',data:Array(12).fill(0),backgroundColor:'rgba(46,125,50,0.7)',borderRadius:5},{label:'المصروفات',data:Array(12).fill(0),backgroundColor:'rgba(198,40,40,0.7)',borderRadius:5}]},options:{responsive:true,plugins:{legend:{labels:{color:'#000'}},tooltip:{enabled:true,backgroundColor:'#fff',titleColor:'#000',bodyColor:'#000'}},scales:{x:{ticks:{color:'#000'},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#000'},grid:{color:'rgba(0,0,0,0.05)'},beginAtZero:true}}}});
+const reportCtx=document.getElementById('reportChart').getContext('2d');
+const reportChart=new Chart(reportCtx,{type:'bar',data:{labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],datasets:[{label:'الدخل',data:Array(12).fill(0),backgroundColor:'rgba(46,125,50,0.7)',borderRadius:5},{label:'المصروفات',data:Array(12).fill(0),backgroundColor:'rgba(198,40,40,0.7)',borderRadius:5}]},options:{responsive:true,plugins:{legend:{labels:{color:'#000'}},tooltip:{enabled:true,backgroundColor:'#fff',titleColor:'#000',bodyColor:'#000'}},scales:{x:{ticks:{color:'#000'},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{color:'#000'},grid:{color:'rgba(0,0,0,0.05)'},beginAtZero:true}}}});
+
+// ===== تحديث Dashboard =====
+function updateDashboard(){
+  const totalIncome=monthlyIncome[currentMonth].reduce((sum,i)=>sum+(i.amount||0),0);
+  const totalExpenses=monthlyExpenses[currentMonth].reduce((sum,i)=>sum+(i.amount||0),0)+monthlyLiabilities[currentMonth].filter(l=>l.status==='مدفوع').reduce((sum,l)=>sum+l.amount,0);
+  const savingPercent=parseFloat(document.getElementById('savingPercent')?.value)||20;
+  const saving=Math.round((totalIncome-totalExpenses)*(savingPercent/100));
+  const available=totalIncome-totalExpenses-saving;
+
+  incomeTotal.textContent=totalIncome+" "+currentCurrency;
+  expensesTotal.textContent=totalExpenses+" "+currentCurrency;
+  balanceTotal.textContent=(totalIncome-totalExpenses)+" "+currentCurrency;
+  savingsTotal.textContent=saving+" "+currentCurrency;
+  availableTotal.textContent=available+" "+currentCurrency;
+
+  dashboardChart.data.datasets[0].data=monthlyIncome.map(m=>m.reduce((sum,i)=>sum+(i.amount||0),0));
+  dashboardChart.data.datasets[1].data=monthlyExpenses.map((m,i)=>m.reduce((sum,j)=>sum+(j.amount||0),0)+monthlyLiabilities[i].filter(l=>l.status==='مدفوع').reduce((sum,l)=>sum+l.amount,0));
+  dashboardChart.update();
+
+  document.getElementById('reportIncome').textContent=totalIncome+" "+currentCurrency;
+  document.getElementById('reportExpenses').textContent=totalExpenses+" "+currentCurrency;
+  document.getElementById('reportBalance').textContent=(totalIncome-totalExpenses)+" "+currentCurrency;
+  document.getElementById('reportSaving').textContent=saving+" "+currentCurrency;
+  document.getElementById('reportAvailable').textContent=available+" "+currentCurrency;
+
+  reportChart.data.datasets[0].data=monthlyIncome.map(m=>m.reduce((sum,i)=>sum+(i.amount||0),0));
+  reportChart.data.datasets[1].data=monthlyExpenses.map((m,i)=>m.reduce((sum,j)=>sum+(j.amount||0),0)+monthlyLiabilities[i].filter(l=>l.status==='مدفوع').reduce((sum,l)=>sum+l.amount,0));
+  reportChart.update();
+
+  localStorage.setItem('monthlyIncome',JSON.stringify(monthlyIncome));
+  localStorage.setItem('monthlyExpenses',JSON.stringify(monthlyExpenses));
+  localStorage.setItem('monthlyLiabilities',JSON.stringify(monthlyLiabilities));
+  localStorage.setItem('currentMonth',currentMonth);
+  localStorage.setItem('currentCurrency',currentCurrency);
+
+  renderIncomeList();
+  renderExpenseList();
+  renderLiabilitiesList();
+  updateIncomeEditSelect();
+  updateExpenseEditSelect();
+}
+
+// ===== Render القوائم =====
+function renderIncomeList(){
+  incomeList.innerHTML='';
+  monthlyIncome[currentMonth].forEach(item=>{
+    const li=document.createElement('li');
+    li.textContent=`${item.title} - ${item.amount||0} ${currentCurrency}`;
+    incomeList.appendChild(li);
+  });
+}
+function renderExpenseList(){
+  expenseList.innerHTML='';
+  monthlyExpenses[currentMonth].forEach(item=>{
+    const li=document.createElement('li');
+    li.textContent=`${item.title} - ${item.amount||0} ${currentCurrency}`;
+    expenseList.appendChild(li);
+  });
+}
+function renderLiabilitiesList(){
+  liabilitiesTable.innerHTML='';
+  monthlyLiabilities[currentMonth].forEach((item,index)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${item.title}</td><td>${item.amount}</td><td>${item.date}</td><td>${item.status}</td>
+    <td><button onclick="deleteLiability(${index})">حذف</button></td>
+    <td><button onclick="toggleLiabilityStatus(${index})">تغيير الحالة</button></td>`;
+    liabilitiesTable.appendChild(tr);
+  });
+}
+
+// ===== الالتزامات =====
+function deleteLiability(idx){ if(confirm('هل تريد حذف هذا الالتزام؟')){ monthlyLiabilities[currentMonth].splice(idx,1); updateDashboard(); } }
+function toggleLiabilityStatus(idx){ const item=monthlyLiabilities[currentMonth][idx]; item.status=item.status==='مدفوع'?'غير مدفوع':'مدفوع'; updateDashboard(); }
+
+// ===== إضافة الدخل والمصروف =====
+document.getElementById('addIncome').addEventListener('click',()=>{
+  const val=parseFloat(document.getElementById('incomeAmount').value);
+  if(isNaN(val)) return alert('يرجى إدخال مبلغ صحيح');
+  const title=incomeSelect.value;
+  const existing=monthlyIncome[currentMonth].find(i=>i.title===title);
+  if(existing){ existing.amount=(existing.amount||0)+val; } else monthlyIncome[currentMonth].push({title,amount:val});
+  document.getElementById('incomeAmount').value=''; updateDashboard();
+});
+document.getElementById('addExpense').addEventListener('click',()=>{
+  const val=parseFloat(document.getElementById('expenseAmount').value);
+  if(isNaN(val)) return alert('يرجى إدخال مبلغ صحيح');
+  const title=expenseSelect.value;
+  const existing=monthlyExpenses[currentMonth].find(i=>i.title===title);
+  if(existing){ existing.amount=(existing.amount||0)+val; } else monthlyExpenses[currentMonth].push({title,amount:val});
+  document.getElementById('expenseAmount').value=''; updateDashboard();
+});
+
+// البنود الجديدة
+document.getElementById('addIncomeItem').addEventListener('click',()=>{
+  const title=prompt('أدخل اسم البند الجديد للدخل:');
+  if(title && !monthlyIncome[currentMonth].some(i=>i.title===title)){
+    monthlyIncome[currentMonth].push({title,amount:0});
+    const option=document.createElement('option'); option.value=title; option.textContent=title; incomeSelect.appendChild(option); updateDashboard();
+  }
+});
+document.getElementById('addExpenseItem').addEventListener('click',()=>{
+  const title=prompt('أدخل اسم البند الجديد للمصروفات:');
+  if(title && !monthlyExpenses[currentMonth].some(i=>i.title===title)){
+    monthlyExpenses[currentMonth].push({title,amount:0});
+    const option=document.createElement('option'); option.value=title; option.textContent=title; expenseSelect.appendChild(option); updateDashboard();
+  }
+});
+
+// تعديل وحذف البنود
+document.getElementById('editIncomeItem').addEventListener('click',()=>{
+  const select=document.getElementById('editIncomeSelect'); const title=select.value;
+  const item=monthlyIncome[currentMonth].find(i=>i.title===title);
+  if(item){ const newTitle=prompt('أدخل الاسم الجديد للبند:',item.title); if(newTitle){ item.title=newTitle; updateDashboard(); updateIncomeEditSelect(); } } else alert('البند غير موجود');
+});
+document.getElementById('deleteIncomeItem').addEventListener('click',()=>{
+  const select=document.getElementById('editIncomeSelect'); const title=select.value;
+  const idx=monthlyIncome[currentMonth].findIndex(i=>i.title===title);
+  if(idx>=0){ if(confirm('⚠️ سيتم حذف هذا البند نهائياً. هل تريد المتابعة؟')){ monthlyIncome[currentMonth].splice(idx,1); updateDashboard(); updateIncomeEditSelect(); } } else alert('البند غير موجود');
+});
+document.getElementById('editExpenseItem').addEventListener('click',()=>{
+  const select=document.getElementById('editExpenseSelect'); const title=select.value;
+  const item=monthlyExpenses[currentMonth].find(i=>i.title===title);
+  if(item){ const newTitle=prompt('أدخل الاسم الجديد للبند:',item.title); if(newTitle){ item.title=newTitle; updateDashboard(); updateExpenseEditSelect(); } } else alert('البند غير موجود');
+});
+document.getElementById('deleteExpenseItem').addEventListener('click',()=>{
+  const select=document.getElementById('editExpenseSelect'); const title=select.value;
+  const idx=monthlyExpenses[currentMonth].findIndex(i=>i.title===title);
+  if(idx>=0){ if(confirm('⚠️ سيتم حذف هذا البند نهائياً. هل تريد المتابعة؟')){ monthlyExpenses[currentMonth].splice(idx,1); updateDashboard(); updateExpenseEditSelect(); } } else alert('البند غير موجود');
+});
+
+// حذف المبالغ فقط
+document.getElementById('clearIncomeAmount').addEventListener('click',()=>{ monthlyIncome[currentMonth]=monthlyIncome[currentMonth].map(i=>{ i.amount=0; return i; }); updateDashboard(); });
+document.getElementById('clearExpenseAmount').addEventListener('click',()=>{ monthlyExpenses[currentMonth]=monthlyExpenses[currentMonth].map(i=>{ i.amount=0; return i; }); updateDashboard(); });
+
+// الالتزامات
+document.getElementById('addLiability').addEventListener('click',()=>{
+  const title=document.getElementById('liabilityTitle').value.trim();
+  const amount=parseFloat(document.getElementById('liabilityAmount').value);
+  const date=document.getElementById('liabilityDate').value;
+  const status=document.getElementById('liabilityStatus').value;
+  if(!title||isNaN(amount)||!date) return alert('يرجى إدخال البيانات كاملة');
+  const duplicate=monthlyLiabilities[currentMonth].some(l=>l.title===title && l.amount===amount && l.date===date && l.status===status);
+  if(duplicate) return alert('هذا الالتزام موجود مسبقًا');
+  monthlyLiabilities[currentMonth].push({title,amount,date,status});
+  document.getElementById('liabilityTitle').value=''; document.getElementById('liabilityAmount').value=''; document.getElementById('liabilityDate').value='';
+  updateDashboard();
+});
+
+// الأشهر
+monthSelect.addEventListener('change',()=>{ currentMonth=parseInt(monthSelect.value); updateDashboard(); });
+
+// الإعدادات
+document.getElementById('savingPercent').addEventListener('change',updateDashboard);
+document.getElementById('currencySelect').addEventListener('change',e=>{ currentCurrency=e.target.value; updateDashboard(); });
+document.getElementById('resetData').addEventListener('click',()=>{
+  if(confirm('⚠️ سيتم مسح جميع بيانات المستخدم نهائياً. هل تريد المتابعة؟')){
+    monthlyIncome=Array(12).fill().map(()=>[]); monthlyExpenses=Array(12).fill().map(()=>[]); monthlyLiabilities=Array(12).fill().map(()=>[]); updateDashboard();
+  }
+});
+
+// طباعة التقرير
+document.getElementById('printButton').addEventListener('click',()=>{
+  const reportContent = `
+  <h1 style="text-align:center; margin-bottom:20px;">تقرير الميزانية الشهرية</h1>
+  <p>الشهر: ${document.getElementById('monthSelect').selectedOptions[0].text}</p>
+  <p>العملة: ${currentCurrency}</p>
+  <hr>
+  <h2>ملخص مالي</h2>
+  <table>
+    <tr><th>إجمالي الدخل</th><td>${document.getElementById('reportIncome').textContent}</td></tr>
+    <tr><th>إجمالي المصروفات</th><td>${document.getElementById('reportExpenses').textContent}</td></tr>
+    <tr><th>صافي الرصيد</th><td>${document.getElementById('reportBalance').textContent}</td></tr>
+    <tr><th>الادخار</th><td>${document.getElementById('reportSaving').textContent}</td></tr>
+    <tr><th>الرصيد المتاح بعد الادخار</th><td>${document.getElementById('reportAvailable').textContent}</td></tr>
+  </table>
+  <hr>
+  <h2>قائمة الدخل</h2>
+  <table>
+    <tr><th>البند</th><th>المبلغ</th></tr>
+    ${monthlyIncome[currentMonth].map(i=>`<tr><td>${i.title}</td><td>${i.amount} ${currentCurrency}</td></tr>`).join('')}
+  </table>
+  <h2>قائمة المصروفات</h2>
+  <table>
+    <tr><th>البند</th><th>المبلغ</th></tr>
+    ${monthlyExpenses[currentMonth].map(i=>`<tr><td>${i.title}</td><td>${i.amount} ${currentCurrency}</td></tr>`).join('')}
+  </table>
+  <h2>الالتزامات</h2>
+  <table>
+    <tr><th>البند</th><th>المبلغ</th><th>التاريخ</th><th>الحالة</th></tr>
+    ${monthlyLiabilities[currentMonth].map(l=>`<tr><td>${l.title}</td><td>${l.amount} ${currentCurrency}</td><td>${l.date}</td><td>${l.status}</td></tr>`).join('')}
+  </table>
+  `;
+  const printWindow=window.open('','', 'width=1000,height=800');
+  printWindow.document.write(`<html><head><title>معاينة الطباعة</title>
+  <style>
+    body{font-family:'Cairo','Tajawal',sans-serif;direction:rtl;background:#fff;color:#000;padding:20px;}
+    h1,h2{text-align:center;} table{width:100%;border-collapse:collapse;margin-bottom:20px;} th,td{border:1px solid #000;padding:10px;text-align:center;} th{background:#f2f2f2;} hr{margin:20px 0;border:none;border-top:2px solid #000;} @media print{button{display:none;}}
+  </style></head><body>${reportContent}<button onclick="window.print()">طباعة</button></body></html>`);
+  printWindow.document.close();
+});
+
+updateDashboard();
+</script>
+</body>
+</html>
