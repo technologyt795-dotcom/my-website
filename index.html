@@ -1,202 +1,356 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>لوحة الميزانية الذكية</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>نموذج الميزانية الذكية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #f4f7fa, #e9eff5);
-  margin: 0;
-  color: #222;
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
-.container {
-  max-width: 820px;
-  margin: 30px auto;
-  background: #fff;
-  border-radius: 18px;
-  padding: 40px 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  text-align: center;
+body{
+font-family:'Tajawal',sans-serif;
+background:#f5f7fa;
+text-align:center;
+color:#333;
 }
 
-h1 {
-  font-size: 2.2rem;
-  margin-bottom: 15px;
+.container{
+width:90%;
+max-width:1000px;
+margin:auto;
+padding:20px;
 }
 
-h2 {
-  margin-top: 40px;
+.hero{
+background:#fff;
+padding:60px 20px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+margin-bottom:40px;
 }
 
-p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin: 12px 0;
+h1{
+font-size:32px;
+margin-bottom:15px;
 }
 
-.hero-badge {
-  display: inline-block;
-  background: #eaf7ef;
-  color: #1e7e34;
-  padding: 6px 14px;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
+h2{
+font-size:22px;
+color:#555;
+margin-bottom:30px;
 }
 
-.product-preview img {
-  max-width: 100%;
-  border-radius: 14px;
-  margin-top: 20px;
+.slider{
+position:relative;
+max-width:700px;
+margin:auto;
+overflow:hidden;
+border-radius:15px;
 }
 
-.btn {
-  display: inline-block;
-  margin-top: 25px;
-  padding: 16px 40px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border-radius: 14px;
-  text-decoration: none;
-  background: linear-gradient(90deg, #28a745, #218838);
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(40,167,69,0.35);
-  transition: 0.3s ease;
+.slides{
+display:flex;
+transition:transform 0.5s ease;
 }
 
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(40,167,69,0.45);
+.slides img{
+width:100%;
+border-radius:15px;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-  text-align: right;
+/* arrows */
+
+.prev,.next{
+
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+
+background:#ff6b00;
+color:white;
+border:none;
+
+font-size:24px;
+
+padding:10px 14px;
+
+cursor:pointer;
+
+border-radius:8px;
+
 }
 
-ul li {
-  background: #f8f9fa;
-  padding: 14px 18px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  font-size: 1.05rem;
+.prev{left:10px;}
+.next{right:10px;}
+
+/* CTA button */
+
+@keyframes pulse{
+
+0%{
+transform:scale(1);
+box-shadow:0 0 0 0 rgba(255,107,0,0.7);
 }
 
-.footer-note {
-  font-size: 0.9rem;
-  color: #666;
-  margin-top: 20px;
+70%{
+transform:scale(1.05);
+box-shadow:0 0 0 15px rgba(255,107,0,0);
 }
 
-.highlight {
-  color: #e63946;
-  font-weight: bold;
+100%{
+transform:scale(1);
+box-shadow:0 0 0 0 rgba(255,107,0,0);
 }
+
+}
+
+.btn{
+
+display:inline-block;
+
+margin-top:30px;
+
+background:linear-gradient(90deg,#ff6b00,#ff8c42);
+
+color:white;
+
+padding:18px 40px;
+
+font-size:18px;
+
+border-radius:10px;
+
+font-weight:700;
+
+animation:pulse 2s infinite;
+
+text-decoration:none;
+
+}
+
+.section{
+
+background:white;
+
+padding:40px;
+
+margin-bottom:30px;
+
+border-radius:15px;
+
+box-shadow:0 6px 20px rgba(0,0,0,0.05);
+
+}
+
+.section ul{
+
+list-style:none;
+
+max-width:400px;
+
+margin:auto;
+
+text-align:right;
+
+}
+
+.section li{
+
+padding-right:25px;
+
+margin-bottom:12px;
+
+position:relative;
+
+}
+
+.section li:before{
+
+content:"✔";
+
+position:absolute;
+
+right:0;
+
+color:#ff6b00;
+
+}
+
+footer{
+
+margin-top:40px;
+
+color:#888;
+
+}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-  <div class="hero-badge">
-    💡 أداة رقمية بسيطة تساعدك تتحكم بفلوسك بدل ما تضيع منك
-  </div>
+<div class="hero">
 
-  <h1>
-    راتبك يخلص قبل نهاية الشهر؟  
-    الآن تقدر تتحكم بكل ريال وتبدأ التوفير من أول أسبوع
-  </h1>
+<h1>
 
-  <p>
-    لوحة الميزانية الذكية هي أداة عملية وسهلة الاستخدام  
-    تعطيك رؤية كاملة لوضعك المالي في مكان واحد:  
-    الدخل – المصروفات – الالتزامات – التوفير  
-    عشان تقدر تتخذ قرارات مالية أذكى بدون تعقيد.
-  </p>
+معظم الناس يعتقدون أن راتبهم هو ما يتقاضونه…  
+<br>
+لكن الحقيقة مختلفة
 
-  <p>
-    📱 تعمل على الجوال والكمبيوتر — ⚡ نتائج واضحة من أول استخدام — 🔒 بدون تسجيل
-  </p>
+</h1>
 
-  <a href="https://ndveID.short.gy/smart-budget" class="btn">
-    ابدأ الآن وحمّل لوحة الميزانية فورًا
-  </a>
+<h2>
 
-  <p class="footer-note">
-    🔒 دفع آمن عبر Gumroad · 🛡️ ضمان استرجاع كامل خلال 7 أيام إذا ما استفدت
-  </p>
+اكتشف راتبك الحقيقي خلال دقيقة
 
-  <div class="product-preview">
-    <img src="images/cover.png" alt="معاينة المنتج">
-  </div>
+</h2>
 
-  <p class="highlight">
-    🎁 ستحصل أيضًا على ملف إضافي مجاني يشرح لك استخدام اللوحة خطوة بخطوة
-  </p>
+<div class="slider">
 
-  <h2>ماذا ستحصل عليه؟</h2>
+<div class="slides" id="slides">
 
-  <ul>
-    <li>✔ تعرف بالضبط أين يذهب راتبك كل شهر</li>
-    <li>✔ تكتشف المصاريف التي تستنزف دخلك بدون ما تشعر</li>
-    <li>✔ تنظم التزاماتك الشهرية بطريقة واضحة وبسيطة</li>
-    <li>✔ تتابع وضعك المالي من الجوال أو الكمبيوتر في أي وقت</li>
-    <li>✔ دليل استخدام كامل مع أمثلة عملية جاهز للتطبيق</li>
-  </ul>
+<img src="control_panel.png">
 
-  <h2>هل هذه اللوحة مناسبة لك؟</h2>
-  <ul>
-    <li>✔ تعاني من اختفاء الراتب قبل نهاية الشهر</li>
-    <li>✔ تريد تبدأ التوفير لكن ما تعرف من وين تبدأ</li>
-    <li>✔ عندك التزامات كثيرة وتحتاج ترتيب واضح</li>
-    <li>✔ تبي أداة بسيطة بدون تعقيد التطبيقات المالية</li>
-    <li>✔ تبي تشوف أرقامك بوضوح بدل التخمين</li>
-  </ul>
+<img src="income.png">
 
-  <h2>أسئلة شائعة</h2>
-
-  <p><strong>هل أحتاج خبرة مالية؟</strong><br>
-  لا، اللوحة مصممة للمبتدئين وبسيطة جدًا.</p>
-
-  <p><strong>هل تعمل على الجوال؟</strong><br>
-  نعم، تقدر تستخدمها على الجوال أو الكمبيوتر بسهولة.</p>
-
-  <p><strong>هل فيها اشتراك شهري؟</strong><br>
-  لا، تدفع مرة واحدة فقط وتستخدم اللوحة مدى الحياة.</p>
-
-  <p><strong>ماذا لو ما استفدت؟</strong><br>
-  عندك ضمان استرجاع كامل لمدة 7 أيام.</p>
-<h2>🛡️ ضمان استرجاع الأموال</h2>
-<div style="background:#eaf7ef;color:#1e7e34;padding:20px;border-radius:14px;margin-bottom:30px;font-size:1.05rem;line-height:1.6;">
-  إذا لم تشعر بأن المنتج مناسب لك خلال 7 أيام، يمكنك طلب استرجاع المبلغ بكل بساطة.  
-  لا أسئلة ولا نقاش، فقط تواصل معنا وسنرجع لك المبلغ فورًا.  
-  هذا يجعل تجربة الشراء آمنة وبدون أي قلق.
-</div>
-
-
-  <h2>الاستثمار في مستقبلك المالي</h2>
-  <p>
-    بدل ما تخسر مئات الريالات شهريًا بسبب العشوائية في الصرف  
-    تقدر تستثمر فقط <strong>29 ريال مرة واحدة</strong>  
-    وتستخدم لوحة الميزانية مدى الحياة.
-  </p>
-
-  <a href="https://ndveID.short.gy/smart-budget" class="btn">
-    نعم، أريد التحكم بميزانيتي الآن
-  </a>
-
-  <p class="footer-note">
-    تحميل فوري بعد الدفع · وصول مدى الحياة · دعم عبر البريد
-  </p>
+<img src="Expenses.png">
 
 </div>
+
+<button class="prev" onclick="moveSlide(-1)">❮</button>
+
+<button class="next" onclick="moveSlide(1)">❯</button>
+
+</div>
+
+<a href="https://technologyt795-dotcom.github.io/mizaniyati-free/" target="_blank" rel="noopener" class="btn">
+
+جرب النموذج المجاني الآن
+
+</a>
+
+</div>
+
+<div class="section">
+
+<h2>
+
+هذا النموذج مناسب لك إذا:
+
+</h2>
+
+<ul>
+
+<li>راتبك يختفي قبل نهاية الشهر</li>
+
+<li>لا تعرف أين تذهب مصاريفك</li>
+
+<li>تريد تنظيم ميزانيتك</li>
+
+<li>تريد البدء بالادخار</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h2>
+
+ماذا ستحصل عليه
+
+</h2>
+
+<ul>
+
+<li>ملف جاهز للاستخدام</li>
+
+<li>يعمل فوراً بدون إعدادات</li>
+
+<li>بسيط وسهل الاستخدام</li>
+
+<li>مناسب للمبتدئين</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h2>
+
+هل أعجبك النموذج؟
+
+</h2>
+
+<p>
+
+احصل على النسخة الكاملة التي تحتوي على ميزات إضافية.
+
+</p>
+
+<ul>
+
+<li>تحليل المصاريف الشهري</li>
+
+<li>رسوم بيانية تلقائية</li>
+
+<li>تتبع الادخار</li>
+
+<li>تخطيط مالي كامل</li>
+
+</ul>
+
+<a href="https://technology7.gumroad.com/l/smart-budget" target="_blank" rel="noopener" class="btn">
+
+الحصول على النسخة الكاملة
+
+</a>
+
+</div>
+
+</div>
+
+<footer>
+
+© 2026 جميع الحقوق محفوظة لـ Rashed
+
+</footer>
+
+<script>
+
+let index = 0;
+
+function moveSlide(step){
+
+const slides=document.getElementById("slides");
+
+const total=slides.children.length;
+
+index+=step;
+
+if(index<0) index=total-1;
+
+if(index>=total) index=0;
+
+slides.style.transform=`translateX(-${index*100}%)`;
+
+}
+
+</script>
 
 </body>
 </html>
