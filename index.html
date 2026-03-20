@@ -697,31 +697,39 @@
   </div>
 </div>
 
-<!-- CAROUSEL -->
+<!-- CAROUSEL النسخة المجانية -->
 <section class="carousel-section">
   <div class="section-inner" style="text-align:center;">
-    <div class="section-tag">📸 معاينة النموذج</div>
-    <h2>شاهد كيف يبدو النموذج</h2>
-    <p class="lead" style="margin:0 auto 36px;">واجهة بسيطة وأنيقة تساعدك على رؤية وضعك المالي بوضوح</p>
+    <div class="section-tag">📸 معاينة النسخة المجانية</div>
+    <h2>شاهد كيف يبدو النموذج المجاني</h2>
+    <p class="lead" style="margin:0 auto 36px;">
+      واجهة بسيطة وأنيقة تساعدك على رؤية وضعك المالي بوضوح — جربها الآن مجانًا!
+    </p>
     <div class="carousel-wrap fade-in">
       <div class="carousel-track">
         <div class="carousel-slides" id="slides">
+          <!-- الشريحة 1 -->
           <div class="carousel-slide">
-            <img src="control_panel.png" alt="لوحة التحكم" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <img src="control_panel_free.png" alt="لوحة التحكم المجانية" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
             <div class="slide-placeholder" style="display:none; background: linear-gradient(135deg,#ede9fe,#dbeafe);">
               <span class="slide-icon">🎛️</span>
               <span>لوحة التحكم الرئيسية</span>
             </div>
           </div>
+          <!-- الشريحة 2 -->
           <div class="carousel-slide">
-            <img src="income.png" alt="الدخل" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <img src="income_free.png" alt="الدخل المجاني" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
             <div class="slide-placeholder" style="display:none; background: linear-gradient(135deg,#dcfce7,#d1fae5);">
               <span class="slide-icon">💰</span>
               <span>قسم الدخل والمدخرات</span>
             </div>
           </div>
+          <!-- الشريحة 3 -->
           <div class="carousel-slide">
-            <img src="Expenses.png" alt="المصروفات" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <img src="expenses_free.png" alt="المصروفات المجانية" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
             <div class="slide-placeholder" style="display:none; background: linear-gradient(135deg,#fef9c3,#fce7f3);">
               <span class="slide-icon">📊</span>
               <span>تحليل المصروفات</span>
@@ -729,8 +737,10 @@
           </div>
         </div>
       </div>
+      <!-- أزرار التنقل -->
       <button class="carousel-btn prev" onclick="changeSlide(1)" aria-label="السابق">&#8250;</button>
       <button class="carousel-btn next" onclick="changeSlide(-1)" aria-label="التالي">&#8249;</button>
+      <!-- النقاط -->
       <div class="carousel-dots" id="dots">
         <button class="dot active" onclick="goToSlide(0)"></button>
         <button class="dot" onclick="goToSlide(1)"></button>
