@@ -3,85 +3,336 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>تم الشراء بنجاح</title>
-
+<title>تم الشراء بنجاح — ميزانيتي الذكية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #f4f7fa, #e9eff5);
-  margin: 0;
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-.container {
-  max-width: 780px;
-  margin: 40px auto;
-  background: #fff;
-  padding: 40px 25px;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  text-align: center;
-}
+  body {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: #F0F2FF;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
 
-h1 {
-  font-size: 2.2rem;
-}
+  .top-bar {
+    width: 100%;
+    max-width: 860px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
 
-p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-}
+  .logo {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #6C63FF;
+  }
 
-.btn {
-  display: inline-block;
-  margin: 20px 0;
-  padding: 16px 35px;
-  border-radius: 14px;
-  text-decoration: none;
-  font-weight: bold;
-  color: #fff;
-}
+  .logo span {
+    color: #333;
+  }
 
-.primary {
-  background: linear-gradient(90deg, #28a745, #218838);
-}
+  .badge {
+    background: #6C63FF;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
 
-.upsell {
-  background: linear-gradient(90deg, #ff7a18, #ff4e50);
-}
+  .card {
+    width: 100%;
+    max-width: 860px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(108, 99, 255, 0.12);
+    overflow: hidden;
+  }
 
-.note {
-  font-size: 0.9rem;
-  color: #666;
-}
+  .card-header {
+    background: linear-gradient(135deg, #6C63FF 0%, #9B93FF 100%);
+    padding: 50px 40px 40px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+  }
+
+  .card-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: #fff;
+    border-radius: 30px 30px 0 0;
+  }
+
+  .check-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2.2rem;
+    border: 3px solid rgba(255,255,255,0.4);
+  }
+
+  .card-header h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+
+  .card-header p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    line-height: 1.7;
+  }
+
+  .card-body {
+    padding: 40px;
+  }
+
+  .congrats-text {
+    text-align: center;
+    margin-bottom: 35px;
+  }
+
+  .congrats-text p {
+    font-size: 1.05rem;
+    color: #6B7280;
+    line-height: 1.8;
+  }
+
+  .congrats-text strong {
+    color: #333;
+  }
+
+  .action-box {
+    background: #F0F2FF;
+    border-radius: 14px;
+    padding: 28px 30px;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .action-box h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .action-box p {
+    font-size: 0.95rem;
+    color: #6B7280;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: #6C63FF;
+    color: #fff;
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 14px 36px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background: #5a52e0;
+    transform: translateY(-1px);
+  }
+
+  .divider {
+    height: 1px;
+    background: #E5E7EB;
+    margin: 30px 0;
+  }
+
+  .upsell-box {
+    background: linear-gradient(135deg, #fff8f0, #fff3e6);
+    border: 2px solid #FFD08A;
+    border-radius: 14px;
+    padding: 28px 30px;
+    text-align: center;
+  }
+
+  .upsell-box .upsell-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #ff7a18, #ff4e50);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  .upsell-box h2 {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .upsell-box p {
+    font-size: 0.95rem;
+    color: #6B7280;
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+
+  .price-strike {
+    text-decoration: line-through;
+    color: #aaa;
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+
+  .price-free {
+    display: inline-block;
+    background: #28a745;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 3px 14px;
+    border-radius: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .btn-upsell {
+    display: inline-block;
+    background: linear-gradient(90deg, #ff7a18, #ff4e50);
+    color: #fff;
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 14px 36px;
+    border-radius: 10px;
+    text-decoration: none;
+    margin-top: 18px;
+    transition: opacity 0.2s, transform 0.1s;
+    display: block;
+  }
+
+  .btn-upsell:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .note {
+    font-size: 0.82rem;
+    color: #aaa;
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  .features-list {
+    list-style: none;
+    text-align: right;
+    margin: 14px 0 0;
+    padding: 0;
+  }
+
+  .features-list li {
+    font-size: 0.9rem;
+    color: #555;
+    padding: 5px 0;
+    border-bottom: 1px dashed #eee;
+  }
+
+  .features-list li:last-child {
+    border-bottom: none;
+  }
+
+  .features-list li::before {
+    content: '✔ ';
+    color: #6C63FF;
+    font-weight: 700;
+  }
+
+  .footer {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 0.82rem;
+    color: #aaa;
+  }
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="top-bar">
+  <div class="logo">💰 ميزانيتي <span>الذكية</span></div>
+  <div class="badge">✅ تم الشراء</div>
+</div>
 
-  <h1>🎉 تم الشراء بنجاح</h1>
+<div class="card">
+  <div class="card-header">
+    <div class="check-icon">🎉</div>
+    <h1>تم الشراء بنجاح</h1>
+    <p>مبروك 👏 أنت الآن بدأت أول خطوة حقيقية نحو التحكم بميزانيتك</p>
+  </div>
 
-  <p>مبروك 👏  
-  أنت الآن بدأت أول خطوة حقيقية نحو التحكم بميزانيتك.</p>
+  <div class="card-body">
+    <div class="congrats-text">
+      <p>شكراً لثقتك بـ <strong>ميزانيتي الذكية</strong> — ستجد المنتج جاهزاً لك على الفور.<br />ابدأ الآن وتحكم في مصاريفك بذكاء.</p>
+    </div>
 
-  <a href="https://technologyt795-dotcom.github.io/my-website/smart-budget/" class="btn primary">
-    🚀 حمّل المنتج الآن
-  </a>
+    <div class="action-box">
+      <h2>🚀 حمّل المنتج الآن</h2>
+      <p>انقر على الزر أدناه للوصول الفوري إلى لوحة تحكم ميزانيتك الذكية</p>
+      <a href="https://technologyt795-dotcom.github.io/mizaniyati-free/" class="btn-primary">
+        🚀 حمّل المنتج الآن
+      </a>
+    </div>
 
-  <hr style="margin:30px 0;">
+    <div class="divider"></div>
 
-  <h2>🎁 هدية خاصة لك</h2>
+    <div class="upsell-box">
+      <div class="upsell-badge">🎁 هدية خاصة لك</div>
+      <h2>دليل الاستخدام الكامل — مجاناً</h2>
+      <p>جهزنا لك دليلاً مبسطاً يساعدك على استخدام اللوحة بكفاءة أعلى والاستفادة من جميع الميزات.</p>
+      <p class="price-strike">سعره الأصلي: 9 ريال</p>
+      <p><span class="price-free">مجاناً الآن</span> لأنك أتممت عملية الشراء</p>
+      <ul class="features-list">
+        <li>كيفية إضافة دخلك ومصاريفك بسرعة</li>
+        <li>قراءة الرسوم البيانية وتحليل وضعك المالي</li>
+        <li>ضبط أهداف الادخار وتتبع التقدم</li>
+        <li>نصائح لتخفيض المصاريف بذكاء</li>
+      </ul>
+      <a href="https://technologyt795-dotcom.github.io/mizaniyati-free/" class="btn-upsell">
+        📘 احصل على الدليل المجاني
+      </a>
+      <p class="note">⚠️ العرض يظهر مرة واحدة فقط بعد الشراء</p>
+    </div>
+  </div>
+</div>
 
-  <p>جهزنا لك دليل مبسط يساعدك تستخدم اللوحة بكفاءة أعلى.</p>
-  <p>سعره 9 ريال — تحصل عليه الآن مجانًا بالكامل.</p>
-
-  <a href="https://technology7.gumroad.com/l/user-guide/FREE9" class="btn upsell">
-    📘 احصل على الدليل المجاني
-  </a>
-
-  <p class="note">العرض يظهر مرة واحدة فقط بعد الشراء</p>
-
+<div class="footer">
+  © 2025 ميزانيتي الذكية — جميع الحقوق محفوظة
 </div>
 
 </body>
